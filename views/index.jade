@@ -1,0 +1,77 @@
+extends layout
+
+block content
+  h1 Sistema de Seguridad Vecinal
+  p Gestiona las alertas registradas en SQLite.
+  nav#module-nav
+    button(type='button', data-module='alerts') Alertas
+    each resource in [{id:'neighborhoods', title:'Barrios'}, {id:'residents', title:'Vecinos'}, {id:'authorities', title:'Autoridades'}, {id:'comments', title:'Comentarios'}, {id:'assignments', title:'Asignaciones'}]
+      button(type='button', data-module=resource.id)= resource.title
+
+  section#module-alerts.module-view
+    form#alert-form
+      input#alert-id(type='hidden')
+      label(for='code') Código
+      select#code(required)
+        option(value='RED') Rojo - Emergencia
+        option(value='ORANGE') Naranja - Sospecha
+        option(value='YELLOW') Amarillo - Servicios
+      label(for='category') Incidente
+      input#category(type='text', maxlength='80', required)
+      label(for='description') Descripción
+      textarea#description(maxlength='1000', required)
+      label(for='latitude') Latitud
+      input#latitude(type='number', step='any', min='-90', max='90', placeholder='Ejemplo: -12.0464')
+      label(for='longitude') Longitud
+      input#longitude(type='number', step='any', min='-180', max='180', placeholder='Ejemplo: -77.0428')
+      label(for='status') Estado
+      select#status
+        option(value='OPEN') Abierta
+        option(value='IN_PROGRESS') En progreso
+        option(value='RESOLVED') Resuelta
+        option(value='DISMISSED') Descartada
+      .form-actions
+        button#save-button(type='submit') Guardar alerta
+        button#cancel-button(type='button', hidden) Cancelar edición
+
+    p#message(role='status')
+    h2 Alertas registradas
+    table
+      thead
+        tr
+          th Código
+          th Incidente
+          th Descripción
+          th Estado
+          th Ubicación
+          th Acciones
+      tbody#alerts-body
+  each resource in [{id:'neighborhoods', title:'Barrios', fields:['name','address']}, {id:'residents', title:'Vecinos', fields:['name','phone','email','neighborhood_id']}, {id:'authorities', title:'Autoridades', fields:['name','institution','phone','active']}, {id:'comments', title:'Comentarios', fields:['alert_id','resident_id','content']}, {id:'assignments', title:'Asignaciones', fields:['alert_id','authority_id','status']}]
+    section.resource-section.module-view(id='module-' + resource.id)
+      h2= resource.title
+      form.resource-form(data-resource=resource.id)
+        input.resource-id(type='hidden')
+        each field in resource.fields
+          label(data-label=field)= field
+          if field === 'content'
+            textarea(data-field=field, maxlength='2000', required)
+          else if field === 'active'
+            select(data-field=field)
+              option(value='1') Activa
+              option(value='0') Inactiva
+          else if field === 'status'
+            select(data-field=field)
+              option(value='ASSIGNED') Asignada
+              option(value='ACCEPTED') Aceptada
+              option(value='COMPLETED') Completada
+              option(value='CANCELLED') Cancelada
+          else
+            input(data-field=field, type=field.indexOf('_id') !== -1 ? 'number' : 'text', required=field !== 'address' && field !== 'email' && field !== 'phone')
+        .form-actions
+          button(type='submit') Guardar
+          button.resource-cancel(type='button', hidden) Cancelar
+      table
+        thead
+          tr.resource-head
+        tbody.resource-body
+  script(src='/javascripts/alerts.js')

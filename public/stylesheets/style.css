@@ -1,0 +1,23 @@
+body {
+  padding: 30px 6%;
+  font: 15px Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+form { display: grid; gap: 8px; max-width: 620px; margin: 24px 0; }
+#module-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+#module-nav button.active { background: #1d4ed8; color: white; }
+.module-view[hidden] { display: none; }
+input, select, textarea, button { font: inherit; padding: 8px; }
+textarea { min-height: 80px; resize: vertical; }
+button { cursor: pointer; }
+.form-actions { display: flex; gap: 8px; margin-top: 8px; }
+table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; }
+th { background: #f2f2f2; }
+.badge { border-radius: 4px; color: white; padding: 4px 7px; font-weight: bold; }
+.red { background: #c62828; }.orange { background: #ef6c00; }.yellow { background: #b58900; }
+.success { color: #187b36; }.error { color: #b00020; }
