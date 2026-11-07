@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var alertsRouter = require('./routes/alerts');
 var relatedRouter = require('./routes/related');
+var authRouter = require('./routes/auth');
+var auth = require('./middleware/auth');
 var db = require('./db');
 
 var app = express();
@@ -22,10 +24,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res, next) {
+  if (req.path === '/' || req.path === '/index') {
+    var user = auth.userFromRequest(req);
+    if (!user) return res.redirect('/login');
+    req.authenticatedUser = user;
+  }
+  next();
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/alerts', alertsRouter);
-app.use('/api', relatedRouter);
+app.use('/api/alerts', auth.requireAuth, alertsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api', auth.requireAuth, relatedRouter);
 
 // Initialize SQLite once when the application is loaded.
 db.ready.catch(function(error) {

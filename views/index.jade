@@ -2,7 +2,12 @@ extends layout
 
 block content
   h1 Sistema de Seguridad Vecinal
-  p Gestiona las alertas registradas en SQLite.
+  p Plataforma para reportar incidentes, coordinar vecinos y asignar su atención a las autoridades.
+  p.user-session
+    | Usuario: 
+    strong#current-user= user.name
+  form#logout-form
+    button#logout-button(type='submit') Cerrar sesión
   nav#module-nav
     button(type='button', data-module='alerts') Alertas
     each resource in [{id:'neighborhoods', title:'Barrios'}, {id:'residents', title:'Vecinos'}, {id:'authorities', title:'Autoridades'}, {id:'comments', title:'Comentarios'}, {id:'assignments', title:'Asignaciones'}]
@@ -74,4 +79,4 @@ block content
         thead
           tr.resource-head
         tbody.resource-body
-  script(src='/javascripts/alerts.js')
+  script(src='/javascripts/alerts.js?v=2')

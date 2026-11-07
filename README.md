@@ -95,6 +95,21 @@ Los formularios muestran nombres y descripciones, pero envían los `id` internam
 
 ## API
 
+Autenticación:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+El registro devuelve información del usuario y el login devuelve JSON; además, el servidor coloca el JWT en una cookie `HttpOnly` llamada `auth_token`. No se usa `localStorage`. Para clientes externos, también se puede enviar:
+
+```text
+Authorization: Bearer <token>
+```
+
+Las contraseñas nunca se guardan en texto plano: se almacenan con `bcryptjs`. La cookie/JWT expira en 3 horas y la clave debe configurarse con `JWT_SECRET` en producción. La ruta `/` redirige a `/login` cuando no existe una sesión válida.
+
 Alertas:
 
 ```text

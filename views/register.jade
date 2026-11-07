@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  section.login-panel
+    h1 Sistema de Seguridad Vecinal
+    h2 Crear cuenta
+    form#register-form
+      label(for='name') Nombre completo
+      input#name(type='text', minlength='2', maxlength='100', required)
+      label(for='email') Correo electrónico
+      input#email(type='email', required)
+      label(for='password') Contraseña
+      input#password(type='password', minlength='8', required)
+      label(for='password-confirm') Confirmar contraseña
+      input#password-confirm(type='password', minlength='8', required)
+      button(type='submit') Crear cuenta
+      a.button-link(href='/login') Volver al inicio de sesión
+    p#register-message(role='alert')
+  script(src='/javascripts/register.js?v=2')

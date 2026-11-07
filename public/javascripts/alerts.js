@@ -1,4 +1,6 @@
 (function () {
+  const logoutForm = document.getElementById('logout-form');
+  logoutForm.addEventListener('submit', async function (event) { event.preventDefault(); await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = '/login'; });
   const labels = { name: 'Nombre', address: 'Dirección', phone: 'Teléfono', email: 'Correo electrónico', neighborhood_id: 'Barrio', institution: 'Institución', active: 'Estado', alert_id: 'Alerta', resident_id: 'Vecino', authority_id: 'Autoridad', content: 'Comentario', status: 'Estado' };
   const values = { OPEN: 'Abierta', IN_PROGRESS: 'En progreso', RESOLVED: 'Resuelta', DISMISSED: 'Descartada', ASSIGNED: 'Asignada', ACCEPTED: 'Aceptada', COMPLETED: 'Completada', CANCELLED: 'Cancelada', 1: 'Activa', 0: 'Inactiva' };
   const codes = { RED: 'Rojo', ORANGE: 'Naranja', YELLOW: 'Amarillo' };
@@ -24,6 +26,8 @@
   function escape(text) { const div = document.createElement('div'); div.textContent = text == null ? '' : text; return div.innerHTML; }
 
   async function request(url, options) {
+    options = options || {};
+    options.credentials = 'same-origin';
     const response = await fetch(url, options);
     const data = response.status === 204 ? null : await response.json();
     if (!response.ok) throw new Error(data && (data.errors || [data.error]).join(', '));

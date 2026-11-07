@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  section.login-panel
+    h1 Sistema de Seguridad Vecinal
+    h2 Inicio de sesión
+    form#login-form
+      label(for='email') Correo electrónico
+      input#email(type='email', required, autocomplete='email')
+      label(for='password') Contraseña
+      input#password(type='password', required, autocomplete='current-password')
+      button(type='submit') Ingresar
+    a.button-link(href='/register') Crear una cuenta
+    p#login-message(role='alert')
+  script(src='/javascripts/login.js?v=3')

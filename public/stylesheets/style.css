@@ -21,3 +21,5 @@ th { background: #f2f2f2; }
 .badge { border-radius: 4px; color: white; padding: 4px 7px; font-weight: bold; }
 .red { background: #c62828; }.orange { background: #ef6c00; }.yellow { background: #b58900; }
 .success { color: #187b36; }.error { color: #b00020; }
+.button-link { display: inline-block; margin-top: 8px; color: #1d4ed8; text-decoration: none; }
+.login-panel { max-width: 620px; }
