@@ -90,4 +90,22 @@
     tableBody.addEventListener('click', async function (event) { const edit = event.target.dataset.editResource, del = event.target.dataset.deleteResource, key = edit || del; if (!key) return; try { if (del) { if (!confirm('¿Eliminar este registro?')) return; await request('/api/' + name + '/' + key, { method: 'DELETE' }); await refresh(); return; } const row = await request('/api/' + name + '/' + key); fields.forEach(function (f) { sectionForm.querySelector('[data-field="' + f + '"]').value = row[f] == null ? '' : row[f]; }); sectionForm.querySelector('.resource-id').value = key; sectionForm.querySelector('.resource-cancel').hidden = false; } catch (e) { setMessage(e.message, true); } });
     refresh().catch(function (e) { setMessage(e.message, true); });
   });
+  document.querySelector('#module-nav [data-module="reports"]').addEventListener('click', async function () {
+    document.querySelector('#report-nav [data-report="summary"]').click();
+    try {
+      const report = await request('/api/reports');
+      const labels = { users: 'Usuarios', alerts: 'Alertas', neighborhoods: 'Barrios', residents: 'Vecinos', authorities: 'Autoridades', comments: 'Comentarios', assignments: 'Asignaciones' };
+      document.getElementById('report-cards').innerHTML = Object.keys(report.totals).map(function (key) { return '<div class="report-card"><strong>' + labels[key] + '</strong><span>' + report.totals[key] + '</span></div>'; }).join('');
+      document.getElementById('report-codes').innerHTML = report.alerts.byCode.map(function (r) { return '<tr><td>' + (codes[r.code] || r.code) + '</td><td>' + r.total + '</td></tr>'; }).join('');
+      document.getElementById('report-statuses').innerHTML = report.alerts.byStatus.map(function (r) { return '<tr><td>' + (values[r.status] || r.status) + '</td><td>' + r.total + '</td></tr>'; }).join('');
+      const details = await request('/api/reports/alerts'); document.getElementById('report-alerts').innerHTML = details.map(function (r) { return '<tr><td>' + (codes[r.code] || r.code) + '</td><td>' + escape(r.category) + '</td><td>' + (values[r.status] || r.status) + '</td><td>' + r.comments + '</td><td>' + r.assignments + '</td></tr>'; }).join('');
+      const relational = await request('/api/reports/relational');
+      document.getElementById('report-neighborhoods').innerHTML = relational.neighborhoods.map(function (r) { return '<tr><td>' + escape(r.name) + '</td><td>' + escape(r.address || '') + '</td></tr>'; }).join('');
+      document.getElementById('report-residents').innerHTML = relational.residents.map(function (r) { return '<tr><td>' + escape(r.name) + '</td><td>' + escape(r.phone) + '</td><td>' + escape(r.neighborhood) + '</td></tr>'; }).join('');
+      document.getElementById('report-authorities').innerHTML = relational.authorities.map(function (r) { return '<tr><td>' + escape(r.name) + '</td><td>' + escape(r.institution) + '</td><td>' + (r.active ? 'Activa' : 'Inactiva') + '</td></tr>'; }).join('');
+      document.getElementById('report-comments').innerHTML = relational.comments.map(function (r) { return '<tr><td>' + escape(r.alert) + '</td><td>' + escape(r.resident) + '</td><td>' + escape(r.content) + '</td></tr>'; }).join('');
+      document.getElementById('report-assignments').innerHTML = relational.assignments.map(function (r) { return '<tr><td>' + escape(r.alert) + '</td><td>' + escape(r.authority) + '</td><td>' + (values[r.status] || r.status) + '</td></tr>'; }).join('');
+    } catch (error) { setMessage(error.message, true); }
+  });
+  document.querySelectorAll('#report-nav [data-report]').forEach(function (button) { button.addEventListener('click', function () { document.querySelectorAll('#report-nav button').forEach(function (b) { b.classList.toggle('active', b === button); }); const mode = button.dataset.report; document.getElementById('report-cards').hidden = mode !== 'summary'; document.getElementById('report-codes-panel').hidden = mode !== 'codes'; document.getElementById('report-statuses-panel').hidden = mode !== 'statuses'; document.getElementById('report-details-panel').hidden = mode !== 'details'; const summaryTable = document.getElementById('report-alerts').closest('table'); summaryTable.hidden = mode !== 'summary'; summaryTable.previousElementSibling.hidden = mode !== 'summary'; }); });
 }());

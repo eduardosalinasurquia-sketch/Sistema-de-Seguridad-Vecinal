@@ -23,3 +23,9 @@ th { background: #f2f2f2; }
 .success { color: #187b36; }.error { color: #b00020; }
 .button-link { display: inline-block; margin-top: 8px; color: #1d4ed8; text-decoration: none; }
 .login-panel { max-width: 620px; }
+.report-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; }
+.report-card { border: 1px solid #ddd; border-radius: 5px; padding: 14px 20px; min-width: 120px; display: grid; gap: 8px; }
+.report-card span { font-size: 24px; font-weight: bold; color: #1d4ed8; }
+#report-nav { display: flex; gap: 8px; margin: 15px 0; }
+#report-nav button.active { background: #1d4ed8; color: white; }
+.report-panel[hidden] { display: none; }

@@ -12,6 +12,7 @@ block content
     button(type='button', data-module='alerts') Alertas
     each resource in [{id:'neighborhoods', title:'Barrios'}, {id:'residents', title:'Vecinos'}, {id:'authorities', title:'Autoridades'}, {id:'comments', title:'Comentarios'}, {id:'assignments', title:'Asignaciones'}]
       button(type='button', data-module=resource.id)= resource.title
+    button(type='button', data-module='reports') Reportes
 
   section#module-alerts.module-view
     form#alert-form
@@ -79,4 +80,78 @@ block content
         thead
           tr.resource-head
         tbody.resource-body
-  script(src='/javascripts/alerts.js?v=2')
+  section#module-reports.module-view
+    h2 Reportes del sistema
+    nav#report-nav
+      button(type='button', data-report='summary') Resumen
+      button(type='button', data-report='codes') Por código
+      button(type='button', data-report='statuses') Por estado
+      button(type='button', data-report='details') Detalle de alertas
+    .report-cards#report-cards
+    .report-panel#report-codes-panel
+      h3 Alertas por código
+      table
+        thead
+          tr
+            th Código
+            th Total
+        tbody#report-codes
+    .report-panel#report-statuses-panel
+      h3 Alertas por estado
+      table
+        thead
+          tr
+            th Estado
+            th Total
+        tbody#report-statuses
+    .report-panel#report-details-panel
+      h3 Resumen de alertas
+      table
+        thead
+          tr
+            th Código
+            th Incidente
+            th Estado
+            th Comentarios
+            th Asignaciones
+        tbody#report-alerts
+      h3 Barrios
+      table
+        thead
+          tr
+            th Nombre
+            th Dirección
+        tbody#report-neighborhoods
+      h3 Vecinos
+      table
+        thead
+          tr
+            th Nombre
+            th Teléfono
+            th Barrio
+        tbody#report-residents
+      h3 Autoridades
+      table
+        thead
+          tr
+            th Nombre
+            th Institución
+            th Estado
+        tbody#report-authorities
+      h3 Comentarios
+      table
+        thead
+          tr
+            th Alerta
+            th Vecino
+            th Comentario
+        tbody#report-comments
+      h3 Asignaciones
+      table
+        thead
+          tr
+            th Alerta
+            th Autoridad
+            th Estado
+        tbody#report-assignments
+  script(src='/javascripts/alerts.js?v=4')

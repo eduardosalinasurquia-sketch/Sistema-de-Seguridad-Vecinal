@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var alertsRouter = require('./routes/alerts');
 var relatedRouter = require('./routes/related');
 var authRouter = require('./routes/auth');
+var reportsRouter = require('./routes/reports');
 var auth = require('./middleware/auth');
 var db = require('./db');
 
@@ -37,6 +38,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/alerts', auth.requireAuth, alertsRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/reports', auth.requireAuth, reportsRouter);
 app.use('/api', auth.requireAuth, relatedRouter);
 
 // Initialize SQLite once when the application is loaded.
